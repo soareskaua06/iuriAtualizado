@@ -1,0 +1,62 @@
+{
+    "Medicamento": [
+      {
+        "id": 1,
+        "nome": "Thiaguinho",
+        "fabricante": "Gremio",
+        "preco": "2.000",
+        "quantidade": "10"
+      },
+      {
+        "id": 2,
+        "nome": "Gabriel Mec",
+        "fabricante": "Gremio",
+        "preco": "15.000",
+        "quantidade": "11"
+      }
+    ],
+    "Cliente": [
+      {
+        "id": 1,
+        "nome": "Hadiel Sicsu",
+        "endereco": "Rua Bruno Lampada, 56",
+        "email": "hadiel.sicsu@gmail.com",
+        "telefone": "(51) 998675858"
+      },
+      {
+        "id": 2,
+        "nome": "Richard Rios",
+        "endereco": "Rua Colombia",
+        "email": "richardrios@gmail.com",
+        "telefone": "(51) 998675858"
+      }
+    ],
+    "Fornecedor": [
+      {
+        "id": 1,
+        "nome": "Gremio",
+        "endereco": "Rua Eldorado ",
+        "telefone": "(51) 9952017"
+      },
+      {
+        "id": 2,
+        "nome": "Internacional",
+        "endereco": "Rua Alvorada",
+        "telefone": "20061909"
+      }
+    ],
+    "Venda": [
+      {
+        "id": 1,
+        "data": "10/10/2024",
+        "id_medicamento": 1,
+        "id_cliente": 1
+      },
+      {
+        "id": 2,
+        "data": "1/03/2024",
+        "id_medicamento": 2,
+        "id_cliente": 2
+      }
+    ]
+  }
