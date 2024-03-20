@@ -2,6 +2,7 @@ const express = require('express');
 const server = express();
 const fs = require('fs');
 const dados = require('./dados.json');
+const cors = require('cors')
 
 server.use(express.json());
 
