@@ -4,14 +4,21 @@ const userForm = document.getElementById('user-form')
 // User List = Mostra os dados do Banco de Dados
 const userList = document.getElementById('user-list')
 
+
+
 function listUsers() {
-    fetch('http://localhost:3000/usuarios')
+    fetch('http://localhost:3000/medicamento')
         .then(response => response.json())
         .then(data => {
             userList.innerHTML = '';
-            data.forEach(user => {
+            data.forEach(Medicamento => {
                 const li = document.createElement('li');
-                li.innerHTML = `ID: ${user.id} - Nome: ${user.nome} - Idade: ${user.idade} - Curso: ${user.curso}`;
+                li.innerHTML = `ID: ${med.id} - Nome: ${med.nome} - Fabricante: ${med.fabricante} 
+                - Preço: ${med.preco} - Quantidade: ${med.quant}`;
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Excluir';
+                deleteButton.addEventListener('click', () => deleteMed(med.id));
+                li.appendChild(deleteButton);
                 userList.appendChild(li);
             });
         })
@@ -25,12 +32,13 @@ userForm.addEventListener('submit', async (e) => {
 
     try {
         const userId = await getNextUserId(); // Obtém o próximo ID disponível
-        const name = document.getElementById('name').value;
-        const age = document.getElementById('age').value;
-        const course = document.getElementById('course').value;
+        const nome = document.getElementById('nome').value;
+        const fab = document.getElementById('fabricante').value;
+        const preco = document.getElementById('preco').value;
+        const quant = document.getElementById('quantidade').value;
 
         // Enviando os dados para o servidor
-        fetch('http://localhost:3000/usuarios', {
+        fetch('http://localhost:3000/medicamento', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -61,9 +69,9 @@ const deleteUserForm = document.getElementById('delete-user-form');
 deleteUserForm.addEventListener('submit', (e) => {
     e.preventDefault(); // Prevenção padrão de envio do formulário
 
-    const userId = document.getElementById('user-id').value;
+    const userId = document.getElementById('id').value;
 
-    fetch(`http://localhost:3000/usuarios/${userId}`, {
+    fetch(`http://localhost:3000/medicamento/${id}`, {
             method: 'DELETE',
         })
         .then(response => {
@@ -123,4 +131,4 @@ editUserForm.addEventListener('submit', async (e) => {
 
 
 
-listUsers()
+listUsers();

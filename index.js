@@ -1,18 +1,23 @@
 const express = require('express');
-const server = express();
 const fs = require('fs');
 const dados = require('./dados.json');
 const cors = require('cors')
 
-server.use(express.json());
 
-server.get('/', (req, res) => {
-return res.json({mensagem: 'Nossa API está funcionando'});
-});
+const server = express();
+server.use(express.json());
+server.use(cors());
+
 
 server.listen(3000, () =>{
 console.log("Servidor está funcionando!");
 });
+
+
+
+
+
+
 
 server.get('/medicamento', (req, res) => {
     return res.json(dados.Medicamento);
@@ -30,6 +35,11 @@ server.get('/venda', (req, res) => {
     return res.json(dados.Venda);
 });
 
+
+
+
+
+
 //Adicionar
 server.post("/medicamento", (req, res) => {
     const novoMedicamento = req.body;
@@ -43,6 +53,8 @@ server.post("/medicamento", (req, res) => {
         return res.status(201).json({mensagem: "Dados completos, cadastro feito com sucesso."})
     }
 });
+
+
 
 server.post("/cliente", (req, res) => {
     const novoCliente = req.body;
@@ -70,7 +82,7 @@ server.post("/fornecedor", (req, res) => {
     }
 });
 
-server.post("/venda", (req, res) => {
+server.post("/Venda", (req, res) => {
     const novaVenda = req.body;
 
     if (!novaVenda.data || !novaVenda.id_medicamento || !novaVenda.id_cliente) {
@@ -82,6 +94,12 @@ server.post("/venda", (req, res) => {
         return res.status(201).json({mensagem: "Dados completos, cadastro feito com sucesso."})
     }
 });
+
+
+
+
+
+
 
 //Alterar Informações
 server.put('/medicamento/:id', (req, res) => {
@@ -98,7 +116,8 @@ server.put('/medicamento/:id', (req, res) => {
         dados.Medicamento[indiceMedicamento].preco = atualizarMed.preco || dados.Medicamento[indiceMedicamento].preco
         dados.Medicamento[indiceMedicamento].quantidade = atualizarMed.quantidade || dados.Medicamento[indiceMedicamento].quantidade
         salvarDados(dados)
-        return res.status(201).json({mensagem: "Dados completos, cadastro feito com sucesso."})
+        return res.status(201).json({mensagem: "Dados completos, cadastro feito com sucesso.", usuario: dados.Usuarios[indiceUsuario]});
+
     }
 })
 
@@ -116,7 +135,7 @@ server.put('/cliente/:id', (req, res) => {
         dados.Cliente[indiceCliente].email = atualizarCliente.email || dados.Cliente[indiceCliente].email
         dados.Cliente[indiceCliente].telefone = atualizarCliente.telefone || dados.Cliente[indiceCliente].telefone
         salvarDados(dados)
-        return res.status(201).json({mensagem: "Dados completos, cadastro feito com sucesso."})
+        return res.status(201).json({mensagem: "Dados completos, cadastro feito com sucesso.", usuario: dados.Usuarios[indiceUsuario]});
     }
 })
 
@@ -133,7 +152,7 @@ server.put('/fornecedor/:id', (req, res) => {
         dados.Fornecedor[indiceFornecedor].endereco = atualizarFor.endereco || dados.Cliente[indiceFornecedor].endereco
         dados.Fornecedor[indiceFornecedor].telefone = atualizarFor.telefone || dados.Cliente[indiceFornecedor].telefone
         salvarDados(dados)
-        return res.status(201).json({mensagem: "Dados completos, cadastro feito com sucesso."})
+        return res.status(201).json({mensagem: "Dados completos, cadastro feito com sucesso.", usuario: dados.Usuarios[indiceUsuario]});
     }
 })
 
@@ -150,9 +169,13 @@ server.put('/venda/:id', (req, res) => {
         dados.Venda[indiceVenda].id_medicamento = atualizarVenda.id_medicamento || dados.Venda[indiceVenda].id_medicamento
         dados.Venda[indiceVenda].id_cliente = atualizarVenda.id_cliente || dados.Venda[indiceVenda].id_cliente
         salvarDados(dados)
-        return res.status(201).json({mensagem: "Dados completos, cadastro feito com sucesso."})
+        return res.status(201).json({mensagem: "Dados completos, cadastro feito com sucesso.", usuario: dados.Usuarios[indiceUsuario]});
     }
 })
+
+
+
+
 
 //DELETE
 server.delete('/medicamento/:id', (req, res) => {
@@ -163,7 +186,6 @@ server.delete('/medicamento/:id', (req, res) => {
     dados.Medicamento = dados.Medicamento.filter(m => m.id !== id)
 
     salvarDados(dados);
-
     return res.status(200).json({mensagem: "Medicamento excluido com sucesso."})
 });
 
@@ -175,7 +197,6 @@ server.delete('/cliente/:id', (req, res) => {
     dados.Cliente = dados.Cliente.filter(c => c.id !== id)
 
     salvarDados(dados);
-
     return res.status(200).json({mensagem: "Cliente excluido com sucesso."})
 });
 
@@ -185,7 +206,6 @@ server.delete('/fornecedor/:id', (req, res) => {
     //filtrar os fornecedor, removendo pelo id 
 
     dados.Fornecedor = dados.Fornecedor.filter(f => f.id !== id)
-
     salvarDados(dados);
 
     return res.status(200).json({mensagem: "Fornecedor excluido com sucesso."})
@@ -197,12 +217,13 @@ server.delete('/venda/:id', (req, res) => {
     //filtrar os venda, removendo pelo id 
 
     dados.Venda = dados.Venda.filter(v => v.id !== id)
-
     salvarDados(dados);
 
     return res.status(200).json({mensagem: "Venda excluido com sucesso."})
 });
 
+
+
 function salvarDados(){
-    fs.writeFileSync(__dirname + '/dados.json', JSON.stringify(dados, null, 2));
+    fs.writeFileSync(__dirname + '/data/dados.json', JSON.stringify(dados, null, 2));
 };
